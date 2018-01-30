@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<h1>Registration</h1>
+	<form action="/register" method="post">
+	    {% csrf_token %}
+	    <p>Name: <input type="text" name="name"></p>
+	    <p>Alias: <input type="text" name="alias"></p>
+	    <p>Email: <input type="email" name="email"></p>
+	    <p>Password: <input type="text" name="password"></p>
+	     <p>*Password should be at least 8 characters</p>
+	    <p>Confirm PW: <input type="text" name="password_confirm"></p>
+	    <p>Date of Birth: <input type="date" name="dob" max="2018-01-30"></p>
+	    <input type="submit" value="Register" />
+	</form>
+	{% for x in request.session.errors %}
+          <p>{{x}}</p>
+    {% endfor %}
+
+	<h1>Login</h1>
+	<form action="/login" method="post">
+	    {% csrf_token %}
+	    <p>Email: <input type="text" name="email"></p>
+	    <p>Password: <input type="text" name="password"></p>
+	    <input type="submit" value="Login" />
+	</form>
+	{% for x in users%}
+	<ol>
+		<li>Name: {{x.name}}</li>
+		<li>Username: {{x.username}}</li>
+		<li>Password: {{x.password}}</li>
+	</ol>
+	{% endfor %}
+	<br>
+	<br>
+
+	
+</body>
+</html>

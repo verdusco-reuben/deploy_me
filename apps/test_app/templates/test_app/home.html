@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Books Home</title>
+</head>
+<body>
+	<a href="/pokes/logout">Logout</a>
+
+	<h2>Welcome, {{request.session.name}}!</h2>
+	<p>{{pokes.count}} people have poked you!</p>
+	
+	<div style="border: 2px solid black">
+	{% for x in pokes %}
+		<p>{{x.is_poking.name}} poked you {{x.single_poke_count}} times!</p>
+	{% endfor %}
+	</div>
+
+	<h3>People you may want to poke:</h3>
+	<table>
+		<tr style="background-color: lightgray">
+			<th>Name</th>
+			<th>Alias</th>
+			<th>Email Address</th>
+			<th>Poke History</th>
+			<th>Action</th>
+		</tr>
+		<hr>
+		{% for x in others %}
+		<tr>
+			<th>{{x.name}}</th>
+			<th>{{x.alias}}</th>
+			<th>{{x.email}}</th>
+			<th>{{x.poke_history}} pokes</th>
+
+			<th>
+				<form action="poke/{{x.id}}">
+					<input type="submit" name="poke" value="Poke!">
+				</form>
+			</th>
+		</tr>
+		{% endfor %}
+	</table>
+</body>
+</html>
