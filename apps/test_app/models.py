@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from django.db import models
 import re,bcrypt
 
-emailRegex = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+# emailRegex = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
 # Create your models here.
 class UserManager(models.Manager):
@@ -14,8 +14,8 @@ class UserManager(models.Manager):
 			errors.append("Input is too short")
 		elif (not (password == confirm_password)):
 			errors.append("Password don't match")
-		elif not emailRegex.match(email):
-			errors.append("Invalid email input")
+		# elif not emailRegex.match(email):
+		# 	errors.append("Invalid email input")
 		elif len(User.objects.filter(email=email)) > 0:
 			errors.append("Email already taken")
 		if len(errors) is not 0:
@@ -25,7 +25,7 @@ class UserManager(models.Manager):
 			new_user = User.objects.create(name=name, alias=alias, password=new_pw, email=email, dob=dob)
 			return (True, new_user)
 	def login(self, email, password):
-		print "could it be?"
+		# print "could it be?"
 		errors = []
 		try:
 			b = User.objects.get(email=email)
@@ -40,8 +40,10 @@ class UserManager(models.Manager):
 	def homepage(self, id):
 		context = {
 			'user' : User.objects.get(id=id),
-			'others' : User.objects.exclude(id=id),
-			'pokes' : Poke.objects.filter(getting_poked=id).order_by('-single_poke_count')
+			'others' : User.objects.exclude(id=id).order_by('alias'),
+			'pokes' : Poke.objects.filter(getting_poked=id).order_by('-single_poke_count'),
+			'first' : User.objects.order_by('poke_history').last(),
+			'last' : User.objects.order_by('poke_history').first(),
 		}
 		return context
 	def total(self, id):
@@ -60,10 +62,6 @@ class PokeManager(models.Manager):
 		except:
 			poke = Poke.objects.create(is_poking=poker,getting_poked=pokee, single_poke_count=1)
 		return pokee
-
-
-
-
 
 # Create your models here.
 class User(models.Model):

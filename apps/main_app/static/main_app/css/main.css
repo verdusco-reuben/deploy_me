@@ -1,0 +1,13 @@
+body{
+    margin: 50px;
+    background: #78909c;
+}
+.leaders{
+    font-weight:bolder; 
+}
+.btn{
+    background-color: gray;
+}
+.local_btn, .right{
+    color: white;
+}
